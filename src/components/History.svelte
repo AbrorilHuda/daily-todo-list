@@ -2,9 +2,10 @@
 
 <script lang="ts">
 	import { ambilSemuaStorage, formatTanggal } from '$lib/todo.svelte';
+	import { goto } from '$app/navigation';
 
 	let showModal = false;
-	let selectedJob = '';
+	let selectHistoryTask = '';
 
 	function toggleModal() {
 		showModal = !showModal;
@@ -13,20 +14,22 @@
 	function loopTugas(historytugas: any[]) {
 		let tugas = '';
 		for (let i = 0; i < historytugas.length; i++) {
-			tugas += historytugas[i].teks;
+			tugas += historytugas[i].teks.toString();
+			if (i < historytugas.length - 1) {
+				tugas += ', ';
+			}
 		}
 		return tugas.toLowerCase();
 	}
 
-	function selectJob(event: Event) {
+	function selectHistory(event: Event) {
 		const target = event.target as HTMLInputElement;
-		selectedJob = target.value;
+		selectHistoryTask = target.value;
 	}
 
 	function nextStep() {
-		if (selectedJob) {
-			alert(`Selected job: ${selectedJob}`);
-			showModal = false;
+		if (selectHistoryTask) {
+			goto(`/history/${selectHistoryTask}`);
 		} else {
 			alert('Please select a job.');
 		}
@@ -87,7 +90,7 @@
 									name="job"
 									value={history.kunci}
 									class="peer hidden"
-									onchange={selectJob}
+									onchange={selectHistory}
 								/>
 								<label
 									for={history.kunci}
@@ -96,7 +99,9 @@
 									<div class="block">
 										<div class="w-full text-lg font-semibold">{formatTanggal(history.kunci)}</div>
 										<div class="w-full text-gray-500 dark:text-gray-400">
-											{history.tugas == '' ? 'Sekarang' : loopTugas(history.tugas)}
+											{history.tugas == ''
+												? 'Sekarang'
+												: loopTugas(history.tugas).slice(0, 30) + '...'}
 										</div>
 									</div>
 									<svg
