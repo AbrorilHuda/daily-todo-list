@@ -31,7 +31,7 @@
 		if (selectHistoryTask) {
 			goto(`/history/${selectHistoryTask}`);
 		} else {
-			alert('Please select a job.');
+			alert('Please select a History');
 		}
 	}
 </script>
