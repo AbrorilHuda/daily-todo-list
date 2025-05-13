@@ -41,3 +41,14 @@ export const formatTanggal = (kunci: string) => {
 		day: 'numeric'
 	});
 };
+
+export const ambilSemuaStorage = () => {
+	const semuaStorage = Object.keys(localStorage).filter((kunci) => kunci.startsWith('tugas-'));
+	const semuaTugas = semuaStorage.map((kunci) => {
+		return {
+			kunci,
+			tugas: JSON.parse(localStorage.getItem(kunci) || '[]')
+		};
+	});
+	return semuaTugas;
+};

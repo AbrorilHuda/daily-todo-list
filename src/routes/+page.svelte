@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { state, formatTanggal, tambahTugas, hapusTugas, ubahSelesai } from '$lib/todo.svelte';
+	import History from '../components/History.svelte';
 	$effect(() => {
 		try {
 			const tersimpan = localStorage.getItem(state.kunci);
@@ -37,6 +38,7 @@
 		>
 			Tambah
 		</button>
+		<History />
 	</div>
 
 	<div class="w-auto overflow-x-auto sm:overflow-hidden">
