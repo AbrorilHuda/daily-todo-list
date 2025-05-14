@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { stateData, formatTanggal, tambahTugas } from '$lib/todo.svelte';
 	import History from '../components/History.svelte';
+	import PopUp from '../components/PopUp.svelte';
 	import Table from '../components/Table.svelte';
 	let isOffline = $state(false);
 
@@ -64,3 +65,5 @@
 <div class="w-auto overflow-x-auto sm:overflow-hidden">
 	<Table data={stateData.tugas} />
 </div>
+
+<PopUp />
