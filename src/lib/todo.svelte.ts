@@ -6,29 +6,29 @@ const dapatkanKunciHariIni = () => {
 	const tanggal = new Date();
 	return `tugas-${tanggal.toISOString().split('T')[0]}`; // Format: tugas-2025-05-10
 };
-export const state = $state({
+export const stateData = $state({
 	tugasBaru: '',
 	tugas: [] as Tugas[],
 	kunci: dapatkanKunciHariIni()
 });
 export function tambahTugas() {
-	const teks = state.tugasBaru.trim().toUpperCase();
+	const teks = stateData.tugasBaru.trim().toUpperCase();
 	if (teks) {
-		state.tugas = [...state.tugas, { teks, selesai: false }];
-		state.tugasBaru = '';
+		stateData.tugas = [...stateData.tugas, { teks, selesai: false }];
+		stateData.tugasBaru = '';
 	}
 }
 
 // Ubah status selesai tugas
 export function ubahSelesai(indeks: number) {
-	state.tugas[indeks].selesai = !state.tugas[indeks].selesai;
-	state.tugas = [...state.tugas]; // Picu reaktivitas
+	stateData.tugas[indeks].selesai = !stateData.tugas[indeks].selesai;
+	stateData.tugas = [...stateData.tugas]; // Picu reaktivitas
 }
 
 // Hapus tugas
 export function hapusTugas(indeks: number) {
-	state.tugas.splice(indeks, 1);
-	state.tugas = [...state.tugas]; // Picu reaktivitas
+	stateData.tugas.splice(indeks, 1);
+	stateData.tugas = [...stateData.tugas]; // Picu reaktivitas
 }
 
 // Format tanggal untuk tampilan

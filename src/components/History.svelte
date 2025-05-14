@@ -1,10 +1,8 @@
-<!-- model button untuk history -->
-
 <script lang="ts">
 	import { ambilSemuaStorage, formatTanggal } from '$lib/todo.svelte';
 	import { goto } from '$app/navigation';
 
-	let showModal = false;
+	let showModal = $state(false);
 	let selectHistoryTask = '';
 
 	function toggleModal() {

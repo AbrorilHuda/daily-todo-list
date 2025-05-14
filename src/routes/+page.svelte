@@ -1,12 +1,28 @@
 <script lang="ts">
-	import { state, formatTanggal, tambahTugas } from '$lib/todo.svelte';
+	import { stateData, formatTanggal, tambahTugas } from '$lib/todo.svelte';
 	import History from '../components/History.svelte';
 	import Table from '../components/Table.svelte';
+	let isOffline = $state(false);
+
+	$effect(() => {
+		const updateOfflineStatus = () => {
+			isOffline = !navigator.onLine;
+		};
+		window.addEventListener('online', updateOfflineStatus);
+		window.addEventListener('offline', updateOfflineStatus);
+		updateOfflineStatus();
+
+		return () => {
+			window.removeEventListener('online', updateOfflineStatus);
+			window.removeEventListener('offline', updateOfflineStatus);
+		};
+	});
+
 	$effect(() => {
 		try {
-			const tersimpan = localStorage.getItem(state.kunci);
+			const tersimpan = localStorage.getItem(stateData.kunci);
 			if (tersimpan) {
-				state.tugas = JSON.parse(tersimpan);
+				stateData.tugas = JSON.parse(tersimpan);
 			}
 		} catch (error) {
 			console.error('Gagal memuat tugas dari localStorage:', error);
@@ -16,20 +32,24 @@
 	// Simpan tugas ke localStorage saat tugas berubah
 	$effect(() => {
 		try {
-			localStorage.setItem(state.kunci, JSON.stringify(state.tugas));
+			localStorage.setItem(stateData.kunci, JSON.stringify(stateData.tugas));
 		} catch (error) {
 			console.error('Gagal menyimpan tugas ke localStorage:', error);
 		}
 	});
 </script>
 
-<h1 class="mb-4 text-2xl font-bold">🗓️ Daftar Tugas Harian - {formatTanggal(state.kunci)}</h1>
+{#if isOffline}
+	<p class="text-red-600">Anda Sedang Offline</p>
+{/if}
+
+<h1 class="mb-4 text-2xl font-bold">🗓️ Daftar Tugas Harian - {formatTanggal(stateData.kunci)}</h1>
 
 <div class="mb-4 flex flex-wrap gap-2">
 	<input
 		class="flex-1 rounded border px-3 py-2 shadow"
 		placeholder="Tulis tugas hari ini..."
-		bind:value={state.tugasBaru}
+		bind:value={stateData.tugasBaru}
 		onkeydown={(e) => e.key === 'Enter' && tambahTugas()}
 	/>
 	<button
@@ -42,5 +62,5 @@
 </div>
 
 <div class="w-auto overflow-x-auto sm:overflow-hidden">
-	<Table data={state.tugas} />
+	<Table data={stateData.tugas} />
 </div>

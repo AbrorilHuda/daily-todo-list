@@ -33,6 +33,7 @@
 			>/{data.slug}</span
 		> tidak valid
 	</p>
+	<a href="/" class="mb-1 rounded-sm bg-blue-400 p-1 text-xs font-semibold text-white">Kembali</a>
 {:else}
 	<h1 class="mb-4 text-2xl font-bold">🗓️ History Tugas - {formatTanggal(data.slug)}</h1>
 	<a href="/" class="mb-1 rounded-sm bg-blue-400 p-1 text-xs font-semibold text-white">Kembali</a>
