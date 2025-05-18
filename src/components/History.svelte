@@ -25,6 +25,22 @@
 		selectHistoryTask = target.value;
 	}
 
+	function removeAll(historyTugas: any[]) {
+		if (historyTugas.length === 0) {
+			alert('History tidak ada');
+			return;
+		}
+		if (confirm('Are you sure you want to clear all history?')) {
+			historyTugas.forEach((key) => {
+				if (key.kunci.startsWith('tugas-')) {
+					localStorage.removeItem(key.kunci);
+				}
+			});
+			alert('All history cleared');
+			showModal = false;
+		}
+	}
+
 	function nextStep() {
 		if (selectHistoryTask) {
 			goto(`/history/${selectHistoryTask}`);
@@ -47,7 +63,7 @@
 	<div
 		class="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-transparent shadow-lg"
 	>
-		<div class="relative max-h-full w-full max-w-md p-4">
+		<div class="relative max-h-full w-full max-w-md overflow-auto p-4">
 			<div class="relative rounded-lg bg-white shadow-sm dark:bg-gray-700">
 				<!-- Modal Header -->
 				<div
@@ -72,10 +88,15 @@
 				</div>
 
 				<!-- Modal Body -->
-				<div class="p-4 md:p-5">
+				<div class="overflow-auto p-4 md:p-5">
 					<p class="mb-4 text-gray-500 dark:text-gray-400">
 						Pilih dari list history di bawah ini dan klik tombol
 					</p>
+					<button
+						onclick={() => removeAll(ambilSemuaStorage())}
+						class="mb-3 cursor-pointer rounded bg-red-500 px-2 py-1 text-white shadow"
+						>Clear all history</button
+					>
 					<ul class="mb-4 space-y-4">
 						{#if ambilSemuaStorage().length === 0}
 							<h1 class="text-center font-bold text-orange-500">History Tidak ada</h1>
