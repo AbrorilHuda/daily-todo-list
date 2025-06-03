@@ -17,13 +17,13 @@
 		{#each props.data as tugas, i}
 			<tr>
 				<td class="px-4 py-3 font-bold text-gray-800">{tugas.teks}</td>
-				<td>Tugass</td>
-				<td>UAS</td>
+				<td>Description</td>
+				<td>Type Urgent</td>
 				<td
 					><span
 						class="inline-flex items-center rounded-md px-2 py-1 text-sm {tugas.selesai
-							? 'bg-green-50 text-green-700 ring-green-600/10 dark:bg-green-900/30 dark:text-green-400 dark:ring-green-400/20'
-							: 'bg-yellow-50 text-yellow-700 ring-1 ring-yellow-600/10 ring-inset dark:bg-yellow-900/30 dark:text-yellow-400 dark:ring-yellow-400/20'}"
+							? 'bg-green-50 text-green-700 ring-green-600/10'
+							: 'bg-yellow-50 text-yellow-700 ring-1 ring-yellow-600/10 ring-inset'}"
 						>{tugas.selesai ? 'Selesai' : 'DiKerjakan'}</span
 					>
 				</td>

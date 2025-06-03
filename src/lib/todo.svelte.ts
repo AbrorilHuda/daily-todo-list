@@ -42,13 +42,44 @@ export const formatTanggal = (kunci: string) => {
 	});
 };
 
+// experimental
 export const ambilSemuaStorage = () => {
 	const semuaStorage = Object.keys(localStorage).filter((kunci) => kunci.startsWith('tugas-'));
-	const semuaTugas = semuaStorage.map((kunci) => {
-		return {
-			kunci,
-			tugas: JSON.parse(localStorage.getItem(kunci) || '[]')
-		};
+	const semuaTugas: any[] = [];
+
+	semuaStorage.forEach((kunci) => {
+		// Ambil data, pastikan default-nya adalah string kosong '[]' agar JSON.parse tidak error
+		const dataString = localStorage.getItem(kunci);
+		let dataTugas = [];
+
+		try {
+			// Coba parse data. Jika ada masalah (data rusak), anggap sebagai array kosong.
+			dataTugas = JSON.parse(dataString || '[]');
+		} catch (e) {
+			console.error(`Gagal parsing data untuk kunci '${kunci}':`, e);
+			dataTugas = []; // Jika gagal parse, anggap kosong agar bisa dihapus
+		}
+
+		// Periksa apakah dataTugas adalah array dan apakah isinya kosong
+		if (Array.isArray(dataTugas) && dataTugas.length === 0) {
+			// Jika kosong, hapus dari localStorage
+			localStorage.removeItem(kunci);
+			console.log(`Data dengan kunci '${kunci}' telah dihapus karena kosong.`);
+		} else {
+			// Jika tidak kosong, tambahkan ke hasil yang akan dikembalikan
+			semuaTugas.push({
+				kunci,
+				tugas: dataTugas
+			});
+		}
 	});
+
 	return semuaTugas;
+	// const semuaTugas = semuaStorage.map((kunci) => {
+	// 	return {
+	// 		kunci,
+	// 		tugas: JSON.parse(localStorage.getItem(kunci) || '[]')
+	// 	};
+	// });
+	// return semuaTugas;
 };

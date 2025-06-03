@@ -2,6 +2,15 @@
 	import { ambilSemuaStorage, formatTanggal } from '$lib/todo.svelte';
 	import { goto } from '$app/navigation';
 
+	type dataTugas = {
+		teks: string;
+		selesai: boolean;
+	};
+	interface historyData {
+		kunci: string;
+		tugas: dataTugas[];
+	}
+
 	let showModal = $state(false);
 	let selectHistoryTask = '';
 
@@ -9,10 +18,10 @@
 		showModal = !showModal;
 	}
 
-	function loopTugas(historytugas: any[]) {
+	function loopTugas(historytugas: historyData[]) {
 		let tugas = '';
 		for (let i = 0; i < historytugas.length; i++) {
-			tugas += historytugas[i].teks.toString();
+			tugas += (historytugas[i] as any).teks.toString();
 			if (i < historytugas.length - 1) {
 				tugas += ', ';
 			}
@@ -25,7 +34,7 @@
 		selectHistoryTask = target.value;
 	}
 
-	function removeAll(historyTugas: any[]) {
+	function removeAll(historyTugas: historyData[]) {
 		if (historyTugas.length === 0) {
 			alert('History tidak ada');
 			return;
